@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .chat-box {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .bot-response {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .option {
+            margin-bottom: 10px;
+        }
+        .quiz-completed {
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Python Quiz</h1>
+        <div id="quiz-container" class="chat-box">
+            {% if finished %}
+                <p class="quiz-completed">Quiz completed! Your score is {{ score }}/{{ total_questions }}.</p>
+                <form method="get" action="{% url 'reset_quiz' %}">
+                    <button type="submit" class="btn btn-secondary submit-btn">Reset Quiz</button>
+                </form>
+            {% else %}
+                <p class="bot-response">{{ question.question_text }}</p>
+                <form id="answer-form" class="user-input" method="post">
+                    {% csrf_token %}
+                    <div id="options">
+                        {% for option in question.options %}
+                            <div class="option">
+                                <input type="radio" id="option_{{ forloop.counter }}" name="user_answer" value="{{ option }}" required>
+                                <label for="option_{{ forloop.counter }}">{{ option }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
